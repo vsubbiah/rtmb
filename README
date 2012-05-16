@@ -1,0 +1,170 @@
+RTMB: Real Time Micro Benchmark
+===============================
+
+
+1. Introduction:
+================
+RTMB (Real Time Micro Benchmark) is a suite of micro-benchmarks that 
+verify that a system works well, from a real-time perspective. The 
+benchmark does not attempt to measure the throughput of the system, since 
+this is already covered with many other benchmarks in wide-use.
+
+RTMB concentrates on determinism, i.e., consistency of response
+times, (which is by far the most important requirement from a real-time
+system) as well as ensuring that throughput is reasonable. There are two
+very important types of real-time systems being developed today:
+hard real-time systems, where unexpected deviations from an expected
+performance criteria are unacceptable, and possibly catastrophic, and soft
+real-time systems, where those same deviations may be acceptable, as long as
+their frequency is low enough and, possibly, the deviation is small enough.
+
+Another dimension to the services that need to be measured revolves around
+the programming language being used by the application. Core functional
+services need to be measured for any programming language being benchmarked.
+Programming languages that provide a complex programming environment, such
+as a virtual machine in a Java environment also need to ensure the core
+services provided by the system are also measured. This benchmark will be
+defined in terms of C, C++, Java and an RTSJ-compliant Java systems.
+
+This README doc helps locate and download the RTMB sources, build and
+finally execute the tests.
+
+Any feedback to this document or about RTMB should be sent to any or all
+of the following people:
+
+Ajith Ramanath (ajith.ramanath@in.ibm.com)
+Radhakrishnan Thangamuthu (rthangam@in.ibm.com)
+Mike Fulton (fultonm@ca.ibm.com)
+
+5. Source tree structure:
+=========================
+rtmb_c/
+    common/             = Contains the master makefile and build setup scripts.
+    config/             = Contains the test configuration file.
+    rtmb/             = Contains the binaries and shared objects.
+    src/                = Contains the sources for RTMB.
+        harness/        = Contains the harness/framework code.
+            include/    = Contains the header files of the harness/framework code.
+        testcase/       = Contains implementation of all the micro-benchmark tests.
+            util/       = Contains source files for test utilities.
+        util/           = Contains source files for utilities used by the benchmark.
+            include/    = Contains the header files for utilities.
+
+rtmb_cpp/
+    common/             = Contains the master makefile and build setup scripts.
+    config/             = Contains the test configuration file.
+    rtmb/             = Contains the binaries and shared objects.
+    src/                = Contains the sources for RTMB.
+        harness/        = Contains the harness/framework code.
+            include/    = Contains the header files of the harness/framework code.
+        testcase/       = Contains implementation of all the micro-benchmark tests.
+            util/       = Contains source files for test utilities.
+        util/           = Contains source files for utilities used by the benchmark.
+            include/    = Contains the header files for utilities.
+
+rtmb_java/
+    common/             = Contains the master makefile and build setup scripts.
+    config/             = Contains the test configuration file.
+    src/
+        com/
+            ibm/
+                realtime/
+                    spec/
+                        params/         = This directory has classes for benchmark framework.
+                        reporter/       = This is the reporter code. Yet to be completely done.
+                        results/        = This will manage the test results.
+                        tests/          = This contains implmentation of the tests.
+                            impl/       = This contains implementation of all the facotories that the tests use.
+                            util/       = This contains implementation of all the utility classes that the tests use.
+                        util/           = This contains all the utility classes that the entire benchmark suite uses.
+
+6. Building the source files:
+=============================
+a. Change directory to "common' directory within "rtmb_c", "rtmb_cpp" or "rtmb_java" folders:
+
+# cd ./common
+
+b. Run setup.<os> (where <os> is currently setup.aix or setup.linux)
+
+# source ./setup.<os>
+
+c. (java only) You will need to ensure that both 'java' and 'javac' are on your PATH before running the next step.
+   In addition, if you are not running the IBM WebSphere Real Time JVM, you will need to modify the
+   environment variables 'JAR', 'JAVAC', 'JAVA' as appropriate for your JVM, e.g. export JAVAC=/my/alternate/path/bin/javac
+
+d. Run make clean. This should remove the old classes/JARs:
+
+# make clean
+
+e. Run make to build all the sources:
+
+# make
+
+How to run:
+===========
+
+1. RTMB implementation in 'C' and 'C++' languages - "rtmb_c" and "rtmb_cpp":
+
+# pwd
+/home/ajithr/rtmb_c
+# ./bin/rtmb <options>
+
+<options> are listed by running 'help':
+
+# ./bin/rtmb --help
+
+Usage: rtmb [<option>]*, where <option> is one of:
+
+-h, --help, -?                  Print the command-line syntax.                            
+-s, --silent                    Silent run (default).                                     
+-v, --verbose:level             Verbose output. Opposite of -s.                           
+                                Where <level> should be one of:                           
+                                    simple  = simple verbose output                       
+                                    details = detailed verbose output                     
+-f, --file <file>               Path for input configuration file.                        
+                                Defaults to file "$HOME/config/input.txt"                 
+-r, --report <dir>              Path to report directory. Defaults to $PWD.               
+-q, --quick                     Perform a quick single iteration run.                     
+-c, --compliant                 Perform compliant run. Opposite of -q (default).          
+--hard-rt                       Run in hard real-time mode.                               
+--soft-rt                       Run in soft real-time mode.                               
+-t, --test [<tests>]*           Tests to run separated by colon. Default = all.           
+                                Type "-t?" or "--test?" to print list of tests.           
+--jvm-options "<options>"       Java options that require to be used with any             
+                                child JVMs that the benchmark may create.                           
+
+To start RTMB program with simple verbose output , type
+# ./bin/rtmb -v:simple
+
+To start RTMB program with detailed verbose output, type
+# ./bin/rtmb -v:detailed
+
+2. RTMB implementation in 'Java' language - "rtmb_java':
+
+    a.  Set the PATH environment variable to the Java SDK that you want the test to be run with.
+    b.  Change directory to the folder called java_impl within the installed location of the tests.
+    c.
+        i.   If you are using WRT (RTSJ compliant) java, from the same directory, issue this command:
+
+             # java -Xrealtime -Xmx2048m -Xgc:scopedMemoryMaximumSize=500m -Xgc:noSynchronousGCOnOOM \
+                -jar ./lib/RTMB.jar --jvm-options "-Xmx128m -Xrealtime \
+                -Xgc:scopedMemoryMaximumSize=10m -Xgc:noSynchronousGCOnOOM"
+
+        ii.  If you are using SRT Java, from the same directory, issue this command:
+
+             # java -Xrealtime -Xmx2048m -jar ./lib/rtmb.jar --jvm-options "-Xmx128m -Xrealtime"
+
+        iii. If you are using the standard J2SE Java, from the same directory, issue this command:
+
+             # java -Xmx2048m -jar ./lib/rtmb.jar --jvm-options "-Xmx128m"
+
+        The above command lines will produce a "silent" run. Choose "-v:simple" or "-v:detailed" options
+        to get simple or detailed verbose outputs respectively.
+
+        Use the "--help" or "-h" options to print usage details on the console:
+
+        NOTE: Providing an Xmx of lesser than 2GB may produce an OOM error. We have verified
+        that 2GB heap would be required to avoid getting OOM errors. Also note that,
+        scopedMemoryMaximumSize should be 500 MBs or more. OOM error can result if anything
+        lesser is provided as a Java start-up option.
+

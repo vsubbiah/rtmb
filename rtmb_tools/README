@@ -1,0 +1,29 @@
+Simple tools are in this directory.
+
+Right now, it is just 2 tools to produce a plot on Linux.
+
+If you run one of the RTMB programs and generate a report directory, 
+you can get a graphical view of the data as follows:
+
+For a Histogram plot:
+-Assume the report file you want a graphical view of is called c_report_090713_223651290/lock_consistency/report.txt
+-Also assume you want a postscript plot file in lock_consistency.ps
+
+-Set your CLASSPATH to point to the com.ibm.realtime.rtmb.tools.Histogram.class file, 
+ e.g. export CLASSPATH=/home/fultonm/rtmb_tools/bin
+-Set your PATH to point to the RTMB tools  directory, 
+ e.g. export PATH=/home/fultonm/rtmb_tools:$PATH
+ 
+-java com.ibm.realtime.rtmb.tools.Histogram <c_report_090713_223651290/lock_consistency/report.txt | histogram "Plot Label" >lock_consistency.ps
+
+For an Execution-Time plot:
+-Assume the report file you want a graphical view of is called java_report_090713_223651290/CompilationTest/report.txt
+-Also assume you want a postscript plot file in CompilationTest.ps
+
+-Set your CLASSPATH to point to the com.ibm.realtime.rtmb.tools.ExecutionTime.class file, 
+ e.g. export CLASSPATH=/home/fultonm/rtmb_tools/bin
+-Set your PATH to point to the RTMB tools  directory, 
+ e.g. export PATH=/home/fultonm/rtmb_tools:$PATH
+ 
+-java com.ibm.realtime.rtmb.tools.ExecutionTime <java_report_090713_223651290/CompilationTest/report.txt | executionTime "Plot Label" >CompilationTest.ps
+

@@ -1,0 +1,257 @@
+###############################################################################################
+# ************ EDIT THIS FILE IF YOU KNOW WHAT YOU ARE DOING **************
+#
+# This is the input configuration file that the micro-benchmark uses for execution.
+# Each micro-benchmark test will have an entry similar to this:
+#
+# test
+# name=XXX
+# desc=XXXXXX
+# iterations=XXXX
+# config_test=X
+# reference_score=XXXXXXX
+# threshold=X
+# /test
+# 
+# Each test entry start is represented by the keyword 'test' and the end of config
+# paramaters for a test is represented by '/test'.
+#
+# The key-value pair - "name=XXX" represents the micro-benchmark name. The main function/class
+# that is implementing this micro-benchmark also carries the same name in the source code. 
+# So, any changes to this key-value pair should carry changes in the source code as well.
+# Else, you may end up getting test failures.
+#
+# The key-value pair - "desc=XXXXXX" describes the micro-benchmark briefly.
+#
+# The next key-value pair is - "iteration=XXXX". This is used to calculate the total number of
+# iterations that the micro-benchmark needs to run for. The total number of iterations run by a 
+# micro-benchmark is equal to the product of iteration and the multiplier value 
+# (eg: hard.multiplier,soft.multiplier) specified at the bottom of this config file. 
+#
+# The next key-value pair is - "config_test=X". This is a boolean and if true (1) it indicates 
+# that the test is a configuration test and not a micro-benchmark. If this is false, then the
+# test is not a config test. A config test is the test that will always run first, to determine 
+# the capabilities of the system. For example - the accuracy of the system clock, timer etc. 
+# The output of this will be used by other micro-benchmarks for their operations.
+#
+# The next key-value pair is - "reference_score=XXXXXXX". This is the score that a reference
+# machine produced for the micro-benchmark test. This is used to come up with the final score 
+# of micro-benchmark and for the system.
+#
+# The next key-value pair is - "threshold=X". For every micro-benchmark run, there is a check
+# if the results are within the acceptable variance; if not, then the micro-benchmark is retried. 
+#
+# Towards the end of this file, the "acceptable" and "range" percentages for each of the test
+# execution modes is given.
+#
+# For eg.:
+#
+# soft.acceptable_percentage=99
+#
+# This means the acceptable percentage for "--soft-rt" execution mode is 99%. 
+# 
+# soft.range_percentage=50
+# 
+# This means the range percentage for "--soft-rt" execution mode is 50%.
+#
+# Finally, it means that 99% of all iterations should complete within +/- 50% of the value at
+# the median. If an execution of a micro-benchmark does not meet this criteria, it is retried
+# for 'threshold' number of times.
+#
+# Likewise, the default acceptable and range percentages for "--hard-rt" and "--guaranteed-rt"
+# are provided.
+###############################################################################################
+#
+# System clock configuration test
+test
+name=ClockConfig
+desc=Determines the accuracy of the system clock.
+iterations=10000
+config_test=1
+reference_score=1000000
+threshold=8
+/test
+# Timer configuration test
+test
+name=TimerConfig
+desc=Determines the accuracy of the timer.
+iterations=1000
+config_test=1
+reference_score=1000000
+threshold=8
+/test
+# Integral rate test
+test
+name=IntegralRateTest
+desc=Determines the integral rate of the system
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Floating point rate config test
+test
+name=FloatRateTest
+desc=Determines the floating point rates of the system
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Disk IO read perf test
+test
+name=DiskIOReadTest
+desc=Measures the disk IO read performance
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Disk IO write perf test
+test
+name=DiskIOWriteTest
+desc=Measures the disk IO write performance
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Net IO performance test
+test
+name=NetIOTest
+desc=Measures the net IO performance
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Memory cache performance rate
+test
+name=MemCacheTest
+desc=Measures the memory cache performance
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Time accuracy test
+test
+name=TimeAccuracyTest
+desc=Measures relative accuracy of timer and clock
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+#Event Dispatch test
+test
+name=EventDispatchTest
+desc=Measures consistency of time taken for event dispatch.
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Thread priority test
+test
+name=ThreadPriorityTest
+desc=Checks if higher priority threads preempt lower priority ones
+iterations=100
+config_test=0
+threshold=5
+reference_score=1000000
+threshold=5
+/test
+#Lock Consistency
+test
+name=LockConsistencyTest
+desc=Determines the accuracy of the timer.
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# GC test
+test
+name=GarbageGenerationTest
+desc=Measures consistency of time taken for GC
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=1
+/test
+# Compilation test
+test
+name=CompilationTest
+desc=Measures consistency of time taken for dynamic compilation
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Bytecode consistency test
+test
+name=BytecodeConsistencyTest
+desc=Measures consistency of exec times of various java bytecodes
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Periodic Events test
+test
+name=PeriodicEventsTest
+desc=Measures consistency of exec times of Periodic timers
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# MultiThread
+test
+name=MultiThreadTest
+desc=Determines the throughput/determinism for multi-threads
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# MultiCpu
+test
+name=MultiCpuTest
+desc=Determines throughput/determinism on multi core system
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# NHRT test
+test
+name=NHRTSupportTest
+desc=Measures consistency of NHRT threads in a RTSJ system.
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# scope test
+test
+name=ScopedMemoryTest
+desc=Scoped memory test.
+iterations=100
+config_test=0
+reference_score=1000000
+threshold=5
+/test
+# Expected percentages if we are running soft real-time
+soft.acceptable_percentage=99
+soft.range_percentage=30
+soft.multiplier=100
+# Expected percentages if we are running hard real-time
+hard.acceptable_percentage=99.9
+hard.range_percentage=20
+hard.multiplier=1000
+# Expected percentages if we are running guaranteed real-time
+guaranteed.acceptable_percentage=99.999
+guaranteed.range_percentage=10
+guaranteed.multiplier=1000

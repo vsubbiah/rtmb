@@ -1,0 +1,13 @@
+This folder contains:
+
+1.  clock_config.c 	  : Config test for the system clock.
+2.  timer_config.c        : Config test for the system timer.
+3.  int_rate_config.c     : Config test for interal rate.
+4.  float_rate_config.c   : Config test for floating rate.
+5.  mcache_perf_config.c  : Config test for mcache performance.
+6.  disk_io_config.c      : Config test for disk I/O.
+7.  net_io_config.c       : Config test for network I/O
+
+8.  include/config_test.h : Header file for config test.
+9.  Makefile              : Makefile for config test.
+

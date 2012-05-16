@@ -60,8 +60,17 @@ int set_pthreadattr_sched_param(pthread_attr_t *attr, int policy, int prio) {
 		rc = ERROR;
 	}
 
-	param.sched_priority = prio;
+	if ((n = pthread_attr_setschedpolicy(attr, policy)) != SUCCESS) {
+		int err_code = errno;
+		fprintf(stderr, " errno = %d n = %d  \n", err_code, n);
+		perror("set_pthreadattr_schedpolicy");
+		RTMB_printf(stderr,
+		        "set_pthreadattr_schedpolicy: Unable to set scheduling policy attribute\n");
+		rc = ERROR;
+	}
 
+	memset(&param, 0, sizeof(param));
+	param.sched_priority = prio;
 	if ((n = pthread_attr_setschedparam(attr, &param)) != SUCCESS) {
 		int err_code = errno;
 		fprintf(stderr, " errno = %d n = %d  \n", err_code, n);
@@ -72,15 +81,6 @@ int set_pthreadattr_sched_param(pthread_attr_t *attr, int policy, int prio) {
 		perror("set_pthreadattr_sched_param");
 		RTMB_printf(stderr,
 		        "set_pthreadattr_sched_param: Unable to set priority attribute\n");
-		rc = ERROR;
-	}
-
-	if ((n = pthread_attr_setschedpolicy(attr, policy)) != SUCCESS) {
-		int err_code = errno;
-		fprintf(stderr, " errno = %d n = %d  \n", err_code, n);
-		perror("set_pthreadattr_schedpolicy");
-		RTMB_printf(stderr,
-		        "set_pthreadattr_schedpolicy: Unable to set scheduling policy attribute\n");
 		rc = ERROR;
 	}
 
